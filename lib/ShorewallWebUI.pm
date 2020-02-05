@@ -19,7 +19,29 @@
 
 package ShorewallWebUI;
 
+use strict;
+use warnings;
+use English;
+use utf8;
+
+use feature qw(:5.26);
+no warnings "experimental::lexical_subs";
+no warnings "experimental::signatures";
+no warnings "experimental::smartmatch";
+use experimental 'lexical_subs';
+use experimental 'signatures';
+use experimental 'switch';
+
+use boolean;
+use CGI::Carp;
 use Dancer2;
+use JSON;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use ShorewallWebUI::Constants;
+use ShorewallWebUI::Utils;
 
 our $VERSION = '0.1';
 
