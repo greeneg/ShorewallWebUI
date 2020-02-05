@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="[% webroot %]/css/bootstrap.min.css">
         <link rel="stylesheet" href="[% webroot %]/fonts/font-awesome.min.css">
         <link rel="stylesheet" href="[% webroot %]/fonts/ionicons.min.css">
-        <link rel="stylesheet" href="[% webroot %]/css/Article-List.css">
         <link rel="stylesheet" href="[% webroot %]/css/Footer-Dark.css">
         <link rel="stylesheet" href="[% webroot %]/css/Navigation-Clean.css">
         <link rel="stylesheet" href="[% webroot %]/css/styles.css">
