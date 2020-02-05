@@ -1,0 +1,16 @@
+    <head>
+        <title>[% site_name %] - [% page_title %]</title>
+        <base href="[% webroot %]" />
+        <meta name="copyright" content="[% copyright %]" />
+        <meta name="license"   content="[% license %]" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <link rel="icon" href="[% webroot %]/images/favicons/favicon-32x32.png">
+        <link rel="stylesheet" href="[% webroot %]/css/bootstrap.min.css">
+        <link rel="stylesheet" href="[% webroot %]/fonts/font-awesome.min.css">
+        <link rel="stylesheet" href="[% webroot %]/fonts/ionicons.min.css">
+        <link rel="stylesheet" href="[% webroot %]/css/Article-List.css">
+        <link rel="stylesheet" href="[% webroot %]/css/Footer-Dark.css">
+        <link rel="stylesheet" href="[% webroot %]/css/Navigation-Clean.css">
+        <link rel="stylesheet" href="[% webroot %]/css/styles.css">
+    </head>
