@@ -32,7 +32,7 @@ sub main {
     err_log('== DEBUGGING ==: MOUNTING PLACK::BUILDER ENDPOINTS') if $DEBUG;
 
     return builder {
-        mount '/'         => ShorewallWebUI->to_app;
+        mount '/shorewall'         => ShorewallWebUI->to_app;
     };
 }
 
