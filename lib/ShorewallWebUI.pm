@@ -35,7 +35,7 @@ use experimental 'switch';
 use boolean;
 use CGI::Carp;
 use Dancer2;
-use JSON;
+use JSON qw();
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
