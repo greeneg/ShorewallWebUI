@@ -1,0 +1,5 @@
+        <script src="[% webroot %]/js/jquery.min.js"></script>
+        <script src="[% webroot %]/js/popper.min.js"></script>
+        <script src="[% webroot %]/js/bootstrap.min.js"></script>
+    </body>
+</html>
