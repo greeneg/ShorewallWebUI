@@ -5,9 +5,7 @@ use warnings;
 use English;
 use utf8;
 
-use feature qw{
-    say
-};
+use feature qw(:5.26);
 
 use boolean qw(:all);
 use FindBin;
