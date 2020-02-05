@@ -1,4 +1,4 @@
-package shorewallwebui;
+package ShorewallWebUI;
 use Dancer2;
 
 our $VERSION = '0.1';

@@ -2,44 +2,39 @@
 
 use strict;
 use warnings;
+use English;
+use utf8;
+
+use feature qw{
+    say
+};
+
+use boolean qw(:all);
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 
-
-# use this block if you don't need middleware, and only have a single target Dancer app to run here
-use shorewallwebui;
-
-shorewallwebui->to_app;
-
-=begin comment
-# use this block if you want to include middleware such as Plack::Middleware::Deflater
-
-use shorewallwebui;
+use ShorewallWebUI;
+use ShorewallWebUI::Constants;
 use Plack::Builder;
 
-builder {
-    enable 'Deflater';
-    shorewallwebui->to_app;
+our $VERSION = $ShorewallWebUI::Constants::version;
+my $DEBUG = true;
+
+sub main {
+    say {*STDERR} '>> Starting the ShorewallWebUI application server version '. $ShorewallWebUI::Constants::version;
+    say {*STDERR} '>> '. $ShorewallWebUI::Constants::license;
+    say {*STDERR} '-------------------------------------------------------------';
+    err_log('== DEBUGGING ==: PERL INCLUDE PATH:') if $DEBUG;
+    if ($DEBUG) {
+        foreach my $p (@INC) {
+            say {*STDERR} "== DEBUGGING ==:    $p";
+        }
+    }
+    err_log('== DEBUGGING ==: MOUNTING PLACK::BUILDER ENDPOINTS') if $DEBUG;
+
+    return builder {
+        mount '/'         => ShorewallWebUI->to_app;
+    };
 }
 
-=end comment
-
-=cut
-
-=begin comment
-# use this block if you want to mount several applications on different path
-
-use shorewallwebui;
-use shorewallwebui_admin;
-
-use Plack::Builder;
-
-builder {
-    mount '/'      => shorewallwebui->to_app;
-    mount '/admin'      => shorewallwebui_admin->to_app;
-}
-
-=end comment
-
-=cut
-
+main();
