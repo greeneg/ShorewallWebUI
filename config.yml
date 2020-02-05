@@ -3,7 +3,7 @@
 # all the settings in this file will be loaded at Dancer's startup.
 
 # Your application's name
-appname: "shorewallwebui"
+appname: "ShorewallWebUI"
 
 # The default layout to use for your application (located in
 # views/layouts/main.tt)
@@ -18,14 +18,14 @@ charset: "UTF-8"
 # simple: default and very basic template engine
 # template_toolkit: TT
 
-template: "simple"
+# template: "TT"
 
-# template: "template_toolkit"
-# engines:
-#   template:
-#     template_toolkit:
-#       start_tag: '<%'
-#       end_tag:   '%>'
+template: "template_toolkit"
+ engines:
+   template:
+     template_toolkit:
+       start_tag: '[%'
+       end_tag:   '%]'
 
 # session engine
 #
