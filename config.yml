@@ -4,6 +4,12 @@
 
 # Your application's name
 appname: "ShorewallWebUI"
+port: 5000
+host: localhost
+behind_proxy: 1
+
+logger: file
+log: core
 
 # The default layout to use for your application (located in
 # views/layouts/main.tt)
@@ -21,11 +27,12 @@ charset: "UTF-8"
 # template: "TT"
 
 template: "template_toolkit"
- engines:
-   template:
-     template_toolkit:
-       start_tag: '[%'
-       end_tag:   '%]'
+engines:
+  template:
+    template_toolkit:
+      start_tag: '[%'
+      end_tag:   '%]'
+      debug:     1
 
 # session engine
 #
@@ -50,3 +57,9 @@ template: "template_toolkit"
 #      cookie_name: eshop.session
 #      is_secure: 1
 #      is_http_only: 1
+
+# debugging
+warnings: 1
+show_errors: 1
+startup_info: 1
+traces: 1
