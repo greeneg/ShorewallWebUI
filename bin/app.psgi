@@ -13,6 +13,7 @@ use lib "$FindBin::Bin/../lib";
 
 use ShorewallWebUI;
 use ShorewallWebUI::Constants;
+use ShorewallWebUI::Utils;
 use Plack::Builder;
 
 our $VERSION = $ShorewallWebUI::Constants::version;
