@@ -85,6 +85,18 @@ my sub get_json ($config, $json_file) {
     return $json_txt;
 }
 
+my sub validate_page_launch_date ($launch_date, $curr_date) {
+    my $sub = (caller(0))[3];
+    err_log('TRACE', "Sub: $sub");
+
+    my $do_launch = false;
+    if ($curr_date >= $launch_date) {
+        $do_launch = true;
+    }
+
+    return $do_launch;
+}
+
 my sub register_static_route ($verb, $config, $bindings, $path) {
     # un-reference to make easier to work with
     my %bindings = %$bindings;
