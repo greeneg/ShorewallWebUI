@@ -131,6 +131,7 @@ my sub register_static_route ($verb, $config, $bindings, $path) {
                 err_log('DEBUG', "Triggering GET action for path $path");
                 err_log('DEBUG', "do_launch: $do_launch");
                 err_log('DEBUG', "expire_page: $expire_page");
+                err_log('DEBUG', "Datadump: ". Dumper $config);
                 return template $template, {
                     'webroot'     => $config->{'webroot'},
                     'site_name'   => $config->{'site_title'},
