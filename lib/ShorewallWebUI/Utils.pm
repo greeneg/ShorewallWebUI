@@ -94,11 +94,10 @@ my sub validate_msg_level ($level) {
 }
 
 sub err_log ($level, $msg, $debug_level = 'ERROR') {
-    if (defined $debug_level) {
-        say "\$debug_level is defined";
-    } else {
-        say "\$debug_level is NOT defined";
+    if (! defined $debug_level) {
+        $debug_level = 'ERROR';
     }
+
     my $app_name = basename $0;
 
     if (validate_msg_level($level)) {
