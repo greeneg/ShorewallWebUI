@@ -131,7 +131,7 @@ my sub register_static_route ($verb, $config, $bindings, $path) {
                 err_log('DEBUG', "Triggering GET action for path $path");
                 err_log('DEBUG', "do_launch: $do_launch");
                 err_log('DEBUG', "expire_page: $expire_page");
-                err_log('DEBUG', "Datadump: ". Dumper $config);
+                err_log('TRACE', "Datadump: ". Dumper $config);
                 return template $template, {
                     'webroot'     => $config->{'webroot'},
                     'site_name'   => $config->{'site_title'},
@@ -210,12 +210,12 @@ our sub main {
     foreach my $path (keys %paths) {
         err_log('DEBUG', "FOUND KEY: $path");
         if (exists $paths{$path}->{'get'}) {
-            if ($paths{$path}->{'get'}->{'active'} eq 'true') {
+            if ($paths{$path}->{'get'}->{'active'} eq true) {
                 push @getters, $path;
             }
         }
         if (exists $paths{$path}->{'post'}) {
-            if ($paths{$path}->{'post'}->{'active'} eq 'true') {
+            if ($paths{$path}->{'post'}->{'active'} eq true) {
                 push @posters, $path;
             }
         }
