@@ -57,7 +57,7 @@ our sub load_config ($app_dir) {
     my %configuration = ();
 
     $configuration{'debug'}           = $config->val('General', 'debug_level');
-    $configuration{'webroot'}         = $config->val('Web', 'webpath');
+    $configuration{'webroot'}         = $config->val('Web', 'webroot');
     $configuration{'session_support'} = $config->val('Web', 'session_support', 0);
     $configuration{'article_mech'}    = $config->val('Web', 'article_mech', "JSON");
 
