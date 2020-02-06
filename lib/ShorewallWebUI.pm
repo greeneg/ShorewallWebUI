@@ -196,6 +196,7 @@ our sub main {
     my $data = $json->decode($json_txt);
     my %app_config = (
         'appdir'        => config->{appdir},
+        'webroot'       => $configuration{'webroot'},
         'article_mech'  => $configuration{'article_mech'},
         'debug'         => $configuration{'debug'},
         'configuration' => \%configuration,
