@@ -85,6 +85,9 @@ my sub get_json ($config, $json_file) {
     return $json_txt;
 }
 
+my sub register_get_routes {}
+my sub register_post_routes {}
+
 our sub main {
     set traces => 1;
 

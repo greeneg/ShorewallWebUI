@@ -120,6 +120,7 @@ sub err_log ($level, $msg, $debug_level = 'ERROR') {
     my ($second, $minute, $hour, $day,
         $month, $year, undef, undef, undef) = localtime();
     $month++; # add one, since Perl normally returns 0..11 for months
+    $month = sprintf '%02d', $month;
     $year += 1900; # Expressed as ANSII time, so add 1900 to it to get
                    # the current year
 
