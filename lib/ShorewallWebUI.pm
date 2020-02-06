@@ -52,8 +52,7 @@ our sub load_config ($app_dir) {
     my $sub = (caller(0))[3];
 
     my $config = Config::IniFiles->new(-file => "$app_dir/conf.d/config.ini",
-                                       -allowcontinue => 1) or
-                    carp("== ERROR ==: $sub: Could not read configuration: $OS_ERROR\n");
+                                       -allowcontinue => 1);
 
     my %configuration = ();
 
@@ -72,7 +71,7 @@ our sub main {
 
     my %configuration = load_config(config->{appdir});
     my $sub = (caller(0))[3];
-    err_log("DEBUG", "Sub: $sub", $configuration{'debug_level'});
+    err_log("TRACE", "Sub: $sub");
 
 }
 
