@@ -85,6 +85,41 @@ my sub get_json ($config, $json_file) {
     return $json_txt;
 }
 
+my sub register_static_route ($verb, $config, $bindings, $path) {
+    # un-reference to make easier to work with
+    my %bindings = %$bindings;
+
+    my $sub = (caller(0))[3];
+    err_log('TRACE', "Sub: $sub");
+
+    my $template = $bindings{$path}->{'get'}->{'template'};
+    err_log('DEBUG', "Registering GET action for path '$path'");
+    err_log('DEBUG', "Using template '$template' for path '$path'");
+    given ($verb) {
+        when ('get') {
+            get "$path" => sub {
+                my $do_launch = validate_page_launch_date($bindings{$path}->{$verb}->{'launchDate'}, time);
+                my $expire_page = expire_page($bindings{$path}->{$verb}->{'expireDate'}, time);
+
+                err_log('DEBUG', "Triggering GET action for path $path");
+                err_log('DEBUG', "do_launch: $do_launch");
+                err_log('DEBUG', "expire_page: $expire_page");
+                return template $template, {
+                    'webroot'     => $config->{'webroot'},
+                    'site_name'   => $config->{'site_title'},
+                    'page_title'  => $bindings->{$path}->{'get'}->{'summary'},
+                    'copyright'   => $config->{'copyright'},
+                    'license'     => $config->{'license'},
+                    'launch'      => $do_launch,
+                    'expire_page' => $expire_page
+                };
+            };
+        }
+        when ('put') {}
+        when ('post') {}
+    }
+}
+
 my sub register_get_routes ($config, $bindings, @paths) {
     # un-reference to make easier to work with
     my %bindings = %$bindings;
