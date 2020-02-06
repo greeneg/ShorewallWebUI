@@ -97,6 +97,21 @@ my sub validate_page_launch_date ($launch_date, $curr_date) {
     return $do_launch;
 }
 
+my sub expire_page ($expiry_date, $curr_date) {
+    my $sub = (caller(0))[3];
+    err_log('TRACE', "Sub: $sub");
+
+    my $expire = false;
+    if ($expiry_date != -1) {
+        if ($curr_date > $expiry_date) {
+            $expire = true;
+        }
+    }
+
+    return $expire;
+}
+
+
 my sub register_static_route ($verb, $config, $bindings, $path) {
     # un-reference to make easier to work with
     my %bindings = %$bindings;
