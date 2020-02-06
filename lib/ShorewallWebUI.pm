@@ -99,15 +99,17 @@ my sub register_get_routes ($config, $bindings, @paths) {
         } else {
             err_log('DEBUG', "Path '$path' has no defined traits!");
         }
-        given (@traits) {
-            when ('dynamic') {
-                register_dynamic_route('get', $config, $bindings, $path);
-            }
-            when ('static') {
-                register_static_route('get', $config, $bindings, $path);
-            }
-            when ('actor') {
-                register_actor_route('get', $config, $bindings, $path);
+        foreach my $trait (@traits) {
+            given ($trait) {
+                when ('dynamic') {
+                    register_dynamic_route('get', $config, $bindings, $path);
+                }
+                when ('static') {
+                    register_static_route('get', $config, $bindings, $path);
+                }
+                when ('actor') {
+                    register_actor_route('get', $config, $bindings, $path);
+                }
             }
         }
     }
