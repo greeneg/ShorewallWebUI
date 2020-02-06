@@ -98,6 +98,7 @@ sub err_log ($level, $msg, $debug_level = 'ERROR') {
         $debug_level = 'ERROR';
     }
 
+    my $log_output;
     my $app_name = basename $0;
 
     if (validate_msg_level($level)) {
@@ -110,9 +111,29 @@ sub err_log ($level, $msg, $debug_level = 'ERROR') {
     if (defined $ENV{'SITE_DEBUG'}) {
         $debug_level = $ENV{'SITE_DEBUG'};
     }
+    if (defined $ENV{'LOG_OUTPUT'}) {
+        $log_output = $ENV{'LOG_OUTPUT'};
+    } else {
+        $log_output = 'console';
+    }
+
+    my ($second, $minute, $hour, $day,
+        $month, $year, undef, undef, undef) = localtime();
+    $month++; # add one, since Perl normally returns 0..11 for months
+    $year += 1900; # Expressed as ANSII time, so add 1900 to it to get
+                   # the current year
+
+    my $timestamp = "${year}-${month}-${day} $hour:$minute:$second";
 
     if ($level_by_name{$debug_level} >= $level_by_name{$level}) {
-        say STDERR "${app_name}[$PID]: $level: $msg";
+        if ($log_output eq 'console') {
+            say STDERR "$timestamp ${app_name}[$PID]: $level: $msg";
+        } else {
+            if ($level_by_name{$level} <= 3) {
+                # no matter what, ERRORS and above dump to console
+                say STDERR "$timestamp ${app_name}[$PID]: $level: $msg";
+            }
+        }
     }
 }
 
