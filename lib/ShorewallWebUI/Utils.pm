@@ -103,13 +103,13 @@ sub err_log ($level, $msg, $debug_level = 'ERROR') {
         exit $_errors{'EINVAL'}->{'code'};
     }
 
-    if (defined $ENV{'SITE_DEBUG'} or defined $debug_level) {
-        if ($level_by_name{$ENV{'SITE_DEBUG'}} >= $level_by_name{$level} or
-            $level_by_name{$debug_level} >= $level_by_name{$level}) {
-            say STDERR "$app_name: $level: $msg";
-        }
+    if (defined $ENV{'SITE_DEBUG'}) {
+        $debug_level = $ENV{'SITE_DEBUG'};
     }
 
+    if ($level_by_name{$debug_level} >= $level_by_name{$level}) {
+        say STDERR "$app_name: $level: $msg";
+    }
 }
 
 END { }       # module clean-up code here (global destructor)
