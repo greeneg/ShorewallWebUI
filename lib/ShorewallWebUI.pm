@@ -85,7 +85,35 @@ my sub get_json ($config, $json_file) {
     return $json_txt;
 }
 
-my sub register_get_routes {}
+my sub register_get_routes ($config, $bindings, @paths) {
+    # un-reference to make easier to work with
+    my %bindings = %$bindings;
+
+    my $sub = (caller(0))[3];
+    err_log('TRACE', "Sub: $sub");
+
+    foreach my $path (@paths) {
+        my @traits = $bindings{$path}->{'get'}->{'traits'};
+        if (@traits) {
+            err_log('DEBUG', "Path '$path' has traits: '@traits'");
+        } else {
+            err_log('DEBUG', "Path '$path' has no defined traits!");
+        }
+        given (@traits) {
+            when ('dynamic') {
+                register_dynamic_route('get', $config, $bindings, $path);
+            }
+            when ('static') {
+                register_static_route('get', $config, $bindings, $path);
+            }
+            when ('actor') {
+                register_actor_route('get', $config, $bindings, $path);
+            }
+        }
+    }
+
+    return true;
+}
 my sub register_post_routes {}
 
 our sub main {
