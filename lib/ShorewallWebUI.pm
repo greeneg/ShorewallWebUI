@@ -66,6 +66,25 @@ our sub load_config ($app_dir) {
     return %configuration;
 }
 
+my sub get_json ($config, $json_file) {
+    my $sub = (caller(0))[3];
+    err_log("TRACE", "Sub: $sub");
+
+    err_log("DEBUG", "APPDIR: $config->{'appdir'}");
+    err_log("DEBUG", "JSON FILE: $json_file");
+
+    my $json_txt;
+    {
+        local $INPUT_RECORD_SEPARATOR;
+        open my $fh, '<', "$config->{'appdir'}/$json_file" or
+          croak "Unable to open $json_file";
+        $json_txt = <$fh>;
+        close $fh;
+    }
+
+    return $json_txt;
+}
+
 our sub main {
     set traces => 1;
 
@@ -73,6 +92,22 @@ our sub main {
     my $sub = (caller(0))[3];
     err_log("TRACE", "Sub: $sub");
 
+    my @getters;
+    my @posters;
+
+    my $json_txt = get_json(config, 'bindings.json');
+    my $json = JSON->new();
+    my $data = $json->decode($json_txt);
+    my %app_config = (
+        'appdir'        => config->{appdir},
+        'article_mech'  => $configuration{'article_mech'},
+        'debug'         => $configuration{'debug'},
+        'configuration' => \%configuration,
+        'site_title'    => $data->{'info'}->{'title'},
+        'copyright'     => $data->{'info'}->{'copyright'},
+        'license'       => $data->{'info'}->{'license'}
+    );
+    my %paths = %{$data->{'paths'}};
 }
 
 main();
