@@ -61,7 +61,7 @@ our sub load_config ($app_dir) {
     $configuration{'session_support'} = $config->val('Web', 'session_support', 0);
     $configuration{'article_mech'}    = $config->val('Web', 'article_mech', "JSON");
 
-    err_log("TRACE", "Sub $sub", $configuration{'debug_level'});
+    err_log("TRACE", "Sub: $sub", $configuration{'debug_level'});
 
     return %configuration;
 }
@@ -108,6 +108,26 @@ our sub main {
         'license'       => $data->{'info'}->{'license'}
     );
     my %paths = %{$data->{'paths'}};
+
+    err_log('DEBUG', 'Loading site endpoints from JSON:');
+    foreach my $path (keys %paths) {
+        err_log('DEBUG', "FOUND KEY: $path");
+        if (exists $paths{$path}->{'get'}) {
+            if ($paths{$path}->{'get'}->{'active'} eq 'true') {
+                push @getters, $path;
+            }
+        }
+        if (exists $paths{$path}->{'post'}) {
+            if ($paths{$path}->{'post'}->{'active'} eq 'true') {
+                push @posters, $path;
+            }
+        }
+    }
+
+    register_get_routes(\%app_config, \%paths, @getters);
+    register_post_routes(\%app_config, \%paths, @posters);
+
+    return true;
 }
 
 main();
