@@ -17,19 +17,16 @@ use ShorewallWebUI::Utils;
 use Plack::Builder;
 
 our $VERSION = $ShorewallWebUI::Constants::version;
-my $DEBUG = true;
 
 sub main {
-    say {*STDERR} '>> Starting the ShorewallWebUI application server version '. $ShorewallWebUI::Constants::version;
-    say {*STDERR} '>> '. $ShorewallWebUI::Constants::license;
-    say {*STDERR} '-------------------------------------------------------------';
-    err_log('== DEBUGGING ==: PERL INCLUDE PATH:') if $DEBUG;
-    if ($DEBUG) {
-        foreach my $p (@INC) {
-            say {*STDERR} "== DEBUGGING ==:    $p";
-        }
+    err_log('INFO', '>> Starting the ShorewallWebUI application server version '. $ShorewallWebUI::Constants::version);
+    err_log('INFO', '>> '. $ShorewallWebUI::Constants::license);
+    err_log('INFO', '-------------------------------------------------------------');
+    err_log('DEBUG', 'PERL INCLUDE PATH:');
+    foreach my $p (@INC) {
+        err_log('DEBUG', "   $p");
     }
-    err_log('== DEBUGGING ==: MOUNTING PLACK::BUILDER ENDPOINTS') if $DEBUG;
+    err_log('DEBUG', 'MOUNTING PLACK::BUILDER ENDPOINTS');
 
     return builder {
         mount '/shorewall'         => ShorewallWebUI->to_app;
