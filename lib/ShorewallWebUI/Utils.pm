@@ -32,6 +32,7 @@ use experimental 'switch';
 use boolean qw(:all);
 use base qw(Exporter);
 use Carp;
+use File::Basename;
 use Data::Dumper;
 
 use System::Errors;
@@ -39,7 +40,6 @@ use System::Errors;
 no warnings "experimental::lexical_subs";
 no warnings "experimental::signatures";
 no warnings "experimental::smartmatch";
-
 
 BEGIN {
     use Exporter;
@@ -52,6 +52,31 @@ BEGIN {
     );
     @EXPORT_OK   = qw();
 }
+
+my %level_by_int = (
+    8 => 'TRACE',
+    7 => 'DEBUG',
+    6 => 'INFO',
+    5 => 'NOTICE',
+    4 => 'WARNING',
+    3 => 'ERROR',
+    2 => 'CRITICAL',
+    1 => 'ALERT',
+    0 => 'EMERGENCY'
+);
+my %level_by_name = (
+    'TRACE'     => 8,
+    'DEBUG'     => 7,
+    'INFO'      => 6,
+    'NOTICE'    => 5,
+    'WARNING'   => 4,
+    'ERROR'     => 3,
+    'CRITICAL'  => 2,
+    'ALERT'     => 1,
+    'EMERGENCY' => 0
+);
+
+
 
 my sub validate_msg_level ($level) {
     given (uc $level) {
@@ -68,7 +93,9 @@ my sub validate_msg_level ($level) {
     return false;
 }
 
-sub err_log ($level, $msg) {
+sub err_log ($level, $msg, $debug_level = 'ERROR') {
+    my $app_name = basename $0;
+
     if (validate_msg_level($level)) {
         $level = uc $level;
     } else {
@@ -76,32 +103,10 @@ sub err_log ($level, $msg) {
         exit $_errors{'EINVAL'}->{'code'};
     }
 
-    my %level_by_int = (
-        8 => 'TRACE',
-        7 => 'DEBUG',
-        6 => 'INFO',
-        5 => 'NOTICE',
-        4 => 'WARNING',
-        3 => 'ERROR',
-        2 => 'CRITICAL',
-        1 => 'ALERT',
-        0 => 'EMERGENCY'
-    );
-    my %level_by_name = (
-        'TRACE'     => 8,
-        'DEBUG'     => 7,
-        'INFO'      => 6,
-        'NOTICE'    => 5,
-        'WARNING'   => 4,
-        'ERROR'     => 3,
-        'CRITICAL'  => 2,
-        'ALERT'     => 1,
-        'EMERGENCY' => 0
-    );
-
-    if (defined $ENV{'SITE_DEBUG'}) {
-        if ($ENV{'SITE_DEBUG'} >= $level_by_name{$level}) {
-            say STDERR "$level: $msg";
+    if (defined $ENV{'SITE_DEBUG'} or defined $debug_level) {
+        if ($level_by_name{$ENV{'SITE_DEBUG'}} >= $level_by_name{$level} or
+            $level_by_name{$debug_level} >= $level_by_name{$level}) {
+            say STDERR "$app_name: $level: $msg";
         }
     }
 
