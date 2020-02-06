@@ -93,7 +93,7 @@ my sub register_get_routes ($config, $bindings, @paths) {
     err_log('TRACE', "Sub: $sub");
 
     foreach my $path (@paths) {
-        my @traits = $bindings{$path}->{'get'}->{'traits'};
+        my @traits = @{$bindings{$path}->{'get'}->{'traits'}};
         if (@traits) {
             err_log('DEBUG', "Path '$path' has traits: '@traits'");
         } else {
