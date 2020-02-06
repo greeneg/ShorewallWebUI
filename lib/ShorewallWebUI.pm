@@ -25,17 +25,16 @@ use English;
 use utf8;
 
 use feature qw(:5.26);
-no warnings "experimental::lexical_subs";
-no warnings "experimental::signatures";
-no warnings "experimental::smartmatch";
 use experimental 'lexical_subs';
 use experimental 'signatures';
 use experimental 'switch';
 
 use boolean;
 use CGI::Carp;
+use Config::IniFiles;
 use Dancer2;
 use JSON qw();
+use Data::Dumper;
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
@@ -43,10 +42,40 @@ use lib "$FindBin::Bin/../lib";
 use ShorewallWebUI::Constants;
 use ShorewallWebUI::Utils;
 
-our $VERSION = '0.1';
+no warnings "experimental::lexical_subs";
+no warnings "experimental::signatures";
+no warnings "experimental::smartmatch";
 
-get '/' => sub {
-    template 'index' => { 'title' => 'ShorewallWebUI' };
-};
+our $VERSION = $ShorewallWebUI::Constants::version;
+
+our sub load_config ($app_dir) {
+    my $sub = (caller(0))[3];
+
+    my $config = Config::IniFiles->new(-file => "$app_dir/conf.d/config.ini",
+                                       -allowcontinue => 1) or
+                    carp("== ERROR ==: $sub: Could not read configuration: $OS_ERROR\n");
+
+    my %configuration = ();
+
+    $configuration{'debug'}           = $config->val('General', 'debug_level');
+    $configuration{'webroot'}         = $config->val('Web', 'webpath');
+    $configuration{'session_support'} = $config->val('Web', 'session_support', 0);
+    $configuration{'article_mech'}    = $config->val('Web', 'article_mech', "JSON");
+
+    err_log("TRACE", "Sub $sub", $configuration{'debug_level'});
+
+    return %configuration;
+}
+
+our sub main {
+    set traces => 1;
+
+    my %configuration = load_config(config->{appdir});
+    my $sub = (caller(0))[3];
+    err_log("DEBUG", "Sub: $sub", $configuration{'debug_level'});
+
+}
+
+main();
 
 true;
