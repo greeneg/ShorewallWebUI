@@ -112,7 +112,7 @@ sub err_log ($level, $msg, $debug_level = 'ERROR') {
     }
 
     if ($level_by_name{$debug_level} >= $level_by_name{$level}) {
-        say STDERR "$app_name: $level: $msg";
+        say STDERR "${app_name}[$PID]: $level: $msg";
     }
 }
 
